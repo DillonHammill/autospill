@@ -13,7 +13,7 @@
 #' Read data and metadata from a set of single-color controls.
 #'
 #' @param control.dir Character string with the directory with the set of
-#'     single-color controls.
+#'     single-color controls or an object of class \code{cytoset}.
 #' @param control.def.file Character string with the CSV file defining the
 #'     names and channels of the single-color controls.
 #' @param asp List with AutoSpill parameters.
@@ -155,8 +155,13 @@ read.flow.control <- function( control.dir, control.def.file, asp )
 
     # read fcs files
 
-    flow.set <- lapply( flow.file.name, function( ff )
-        read.FCS( file.path( control.dir, ff ), transformation = NULL ) )
+    flow.set <- lapply( flow.file.name, function( ff ) {
+      if(is(control.dir, "flowSet")) {
+        control.dir[[ff]]
+      } else {
+        read.FCS( file.path( control.dir, ff ), transformation = NULL )  
+      }
+    })
 
     # get range of fcs data
 

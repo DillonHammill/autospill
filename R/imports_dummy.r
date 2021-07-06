@@ -31,6 +31,8 @@
 #' @importFrom grDevices colorRampPalette
 #'
 #' @importFrom MASS bandwidth.nrd kde2d rlm
+#' 
+#' @importFrom methods is
 #'
 #' @importFrom moments skewness
 #'
