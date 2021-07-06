@@ -69,8 +69,12 @@ read.flow.control <- function( control.dir, control.def.file, asp )
 
     # read definition of controls
 
-    control.table <- read.csv( control.def.file, na.strings = "",
-        stringsAsFactors = FALSE )
+    if(is.null(dim(control.def.file))) {
+      control.table <- read.csv( control.def.file, na.strings = "",
+                                 stringsAsFactors = FALSE )
+    } else {
+      control.table <- control.def.file
+    }
 
     check.critical( anyDuplicated( control.table$filename ) == 0,
         "duplicated filenames in fcs data" )

@@ -10,24 +10,24 @@
 
 #' Read markers in a set of flow controls
 #'
-#' Returns a dataframe and writes a csv file with the common set of markers in
-#' a set of single-color controls, together with corrected names in case of
+#' Returns a dataframe and writes a csv file with the common set of markers in a
+#' set of single-color controls, together with corrected names in case of
 #' presence of forbidden characters.
 #'
 #' @param control.dir Character string with the directory with the set of
-#'     single-color controls or an object of class \code{cytoset}.
-#' @param control.def.file Character string with the CSV file defining the
-#'     names and channels of the single-color controls.
+#'   single-color controls or an object of class \code{cytoset}.
+#' @param control.def.file Character string with the CSV file or a
+#'   \code{data.frame} defining the names and channels of the single-color
+#'   controls.
 #' @param asp List with AutoSpill parameters.
 #'
 #' @return Dataframe with the original and corrected names of markers.
 #'
-#' @references Roca \emph{et al}:
-#'     AutoSpill: A method for calculating spillover coefficients to compensate
-#'     or unmix high-parameter flow cytometry data.
-#'     \emph{bioRxiv} 2020.06.29.177196;
-#'     \href{https://doi.org/10.1101/2020.06.29.177196}{doi:10.1101/2020.06.29.177196}
-#'     (2020).
+#' @references Roca \emph{et al}: AutoSpill: A method for calculating spillover
+#'   coefficients to compensate or unmix high-parameter flow cytometry data.
+#'   \emph{bioRxiv} 2020.06.29.177196;
+#'   \href{https://doi.org/10.1101/2020.06.29.177196}{doi:10.1101/2020.06.29.177196}
+#'    (2020).
 #'
 #' @seealso \code{\link{get.autospill.param}}.
 #'
@@ -44,7 +44,11 @@ read.marker <- function( control.dir, control.def.file, asp )
 
     # read definition of controls
 
-    control <- read.csv( control.def.file, stringsAsFactors = FALSE )
+    if(is.null(dim(control.def.file))) {
+      control <- read.csv( control.def.file, stringsAsFactors = FALSE )
+    } else {
+      control <- control.def.file
+    }
 
     check.critical( anyDuplicated( control$file.name ) == 0,
         "duplicated filenames in fcs data" )
