@@ -16,7 +16,7 @@
 #' @importFrom fields interp.surface
 #'
 #' @importFrom flowCore colnames compensate compensation description exprs
-#'     read.FCS transform transformList
+#'     read.FCS transform transformList keyword
 #'
 #' @importFrom flowWorkspace flowjo_biexp
 #'

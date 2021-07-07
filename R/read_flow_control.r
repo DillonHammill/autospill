@@ -170,7 +170,7 @@ read.flow.control <- function( control.dir, control.def.file, asp )
     # get range of fcs data
 
     flow.set.resolution.read <- sapply( flow.set, function( fs )
-        as.numeric( description( fs )[["$P1R" ]] ) )
+        as.numeric( keyword(fs, "$P1R") ) )
 
     check.critical( all( sapply( flow.set.resolution.read, length ) == 1 ),
         "keyword $P1R not found in fcs data" )

@@ -13,6 +13,11 @@
 
 get.worker.process <- function( worker.process.n )
 {
+  if(.Platform$OS.type == "windows") {
+    return(1)
+  } else {
     ifelse( worker.process.n != 0, worker.process.n, detectCores() )
+  }
+    
 }
 
