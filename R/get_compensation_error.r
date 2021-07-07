@@ -8,12 +8,12 @@
 # license. See the LICENSE file for details.
 
 
-# Returns a list of matrices discribing compensation error, with intercepts,
+# Returns a list of matrices describing compensation error, with intercepts,
 # coefficients, slopes, and skewness.
 
 get.compensation.error <- function( expr.data.unco, expr.data.comp,
     marker.spillover.unco, scale.untransformed, plot.figure, figure.label,
-    flow.gate, flow.control, asp )
+    flow.gate = NULL, flow.control, asp )
 {
     marker.spillover.zero <- rep( 0, flow.control$marker.n )
     names( marker.spillover.zero ) <- flow.control$marker
@@ -24,13 +24,27 @@ get.compensation.error <- function( expr.data.unco, expr.data.comp,
 
         # get expression data for primary marker
 
-        marker.proper.expr.unco <- expr.data.unco[
-            which( flow.control$event.sample == samp )[ flow.gate[[ samp ]] ],
-            marker.proper ]
+        if(!is.null(flow.gate)) {
+            marker.proper.expr.unco <- expr.data.unco[
+                which( flow.control$event.sample == samp )[ flow.gate[[ samp ]] ],
+                marker.proper ]
+        } else {
+            marker.proper.expr.unco <- expr.data.unco[
+                which( flow.control$event.sample == samp ),
+                marker.proper ]
+        }
+        
 
-        marker.proper.expr.comp <- expr.data.comp[
-            which( flow.control$event.sample == samp )[ flow.gate[[ samp ]] ],
-            marker.proper ]
+        if(!is.null(flow.gate)) {
+            marker.proper.expr.comp <- expr.data.comp[
+                which( flow.control$event.sample == samp )[ flow.gate[[ samp ]] ],
+                marker.proper ]
+        } else {
+            marker.proper.expr.comp <- expr.data.comp[
+                which( flow.control$event.sample == samp ),
+                marker.proper ]
+        }
+        
 
         marker.expr.n <- length( marker.proper.expr.unco )
 
@@ -57,15 +71,28 @@ get.compensation.error <- function( expr.data.unco, expr.data.comp,
         {
             # get expression data for secondary marker
 
-            marker.expr.unco <- expr.data.unco[
-                which( flow.control$event.sample == samp )[
-                    flow.gate[[ samp ]] ],
-                marker ]
+            if(!is.null(flow.gate)) {
+                marker.expr.unco <- expr.data.unco[
+                    which( flow.control$event.sample == samp )[
+                        flow.gate[[ samp ]] ],
+                    marker ]
+            } else {
+                marker.expr.unco <- expr.data.unco[
+                    which( flow.control$event.sample == samp ),
+                    marker ]
+            }
 
-            marker.expr.comp <- expr.data.comp[
-                which( flow.control$event.sample == samp )[
-                    flow.gate[[ samp ]] ],
-                marker ]
+            if(!is.null(flow.gate)) {
+                marker.expr.comp <- expr.data.comp[
+                    which( flow.control$event.sample == samp )[
+                        flow.gate[[ samp ]] ],
+                    marker ]
+            } else {
+                marker.expr.comp <- expr.data.comp[
+                    which( flow.control$event.sample == samp ),
+                    marker ]
+            }
+            
 
             marker.expr.low.unco <- sort( marker.expr.unco )[ expr.trim.n ]
             marker.expr.high.unco <- sort( marker.expr.unco,
